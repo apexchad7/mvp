@@ -202,7 +202,80 @@
         opacity: 1;
         filter: grayscale(0%);
       }
+
+      /* Animation for flying logos */
+      @keyframes flyOut {
+        0% {
+          transform: translate(-50%, -50%) scale(0.2);
+          opacity: 0;
+        }
+        10% {
+          opacity: 0.7;
+        }
+        85% {
+          opacity: 0.5;
+        }
+        100% {
+          transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(1.2);
+          opacity: 0;
+        }
+      }
+
+      .flying-logo {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+        filter: none;
+        z-index: 5;
+        animation: flyOut var(--duration) forwards;
+        animation-delay: var(--delay);
+        animation-iteration-count: infinite;
+      }
+
+      .flying-logo:hover {
+        opacity: 1;
+      }
     </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Create flying logos
+        createFlyingLogos();
+      });
+
+      function createFlyingLogos() {
+        const container = document.querySelector(".min-h-screen");
+        const logoSources = ["images/btc_logo.png", "images/sol_logo.png", "images/usdc_logo.png"];
+
+        // Create 9 flying logos (3 of each type)
+        for (let i = 0; i < 9; i++) {
+          const logoImg = document.createElement("img");
+          logoImg.src = logoSources[i % 3]; // Cycle through the 3 logo types
+          logoImg.alt = "Flying Crypto Logo";
+          logoImg.className = "flying-logo";
+
+          // Random direction
+          const tx = Math.random() * 400 - 200 + "px";
+          const ty = Math.random() * 400 - 200 + "px";
+
+          // Very small staggered delay (0 to 0.5 seconds) so they don't all fly at once
+          const delay = i * 0.05 + "s";
+
+          // Random animation duration between 2-4 seconds
+          const duration = 2 + Math.random() * 2 + "s";
+
+          // Set CSS variables for the animation
+          logoImg.style.setProperty("--tx", tx);
+          logoImg.style.setProperty("--ty", ty);
+          logoImg.style.setProperty("--delay", delay);
+          logoImg.style.setProperty("--duration", duration);
+
+          container.appendChild(logoImg);
+        }
+      }
+    </script>
   </head>
   <body class="bg-black text-white font-roboto">
     <!-- Top glow effect -->
