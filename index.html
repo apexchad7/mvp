@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>MVP - Most Valuable Printer | Solana Memecoin</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#6e44ff",
+              secondary: "#ff44e3",
+              accent: "#44ffb2",
+              "bolt-blue": "#1488fc",
+              "bolt-text": "#8adaff",
+            },
+            fontFamily: {
+              "press-start": ['"Press Start 2P"', "cursive"],
+              roboto: ["Roboto", "sans-serif"],
+              inter: ["Inter", "system-ui", "sans-serif"],
+              montserrat: ["Montserrat", "system-ui", "sans-serif"],
+            },
+            boxShadow: {
+              glow: "0 0 15px rgba(110, 68, 255, 0.5), 0 0 30px rgba(255, 68, 227, 0.3), 0 0 45px rgba(68, 255, 178, 0.2)",
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+
+      html,
+      body {
+        overflow-x: hidden;
+        width: 100%;
+        position: relative;
+      }
+
+      /* Top glow effect */
+      .top-glow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 70%;
+        background: radial-gradient(ellipse at 20% 0%, rgba(0, 132, 255, 0.4) 0%, rgba(0, 132, 255, 0.1) 10%, transparent 20%);
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      /* Bolt-style border effect */
+      .bolt-border {
+        position: relative;
+        border: 1px solid #333;
+        border-radius: 12px;
+        background-color: #111;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .bolt-border svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 3;
+      }
+
+      .prompt-effect-line {
+        fill: none;
+        stroke: url(#line-gradient);
+        stroke-width: 1;
+        stroke-dasharray: 100;
+        stroke-dashoffset: 0;
+        width: 100%;
+        height: 100%;
+        rx: 11px;
+        ry: 11px;
+      }
+
+      .prompt-shine {
+        fill: url(#shine-gradient);
+      }
+
+      /* Inner glow for image */
+      .inner-glow-wrapper {
+        position: relative;
+        border-radius: 11px;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .inner-glow {
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 70px 70px rgba(0, 0, 0, 0.95);
+        pointer-events: none;
+        border-radius: 11px;
+        z-index: 2;
+      }
+
+      /* Button styles */
+      .bolt-button {
+        position: relative;
+        display: inline-block;
+        font-size: 0.875rem;
+      }
+
+      .bolt-button .border-gradient {
+        position: absolute;
+        inset: -1px;
+        border-radius: 9999px;
+        background: linear-gradient(to right, #1488fc, rgba(20, 136, 252, 0.1));
+        z-index: 1;
+      }
+
+      .bolt-button button {
+        position: relative;
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+        height: 100%;
+        padding: 0.5rem 1.25rem;
+        border-radius: 9999px;
+        background: #0e1c2a;
+        color: #8adaff;
+        z-index: 2;
+        transition: all 0.3s ease;
+      }
+
+      .bolt-button .highlight {
+        color: #1488fc;
+        font-weight: 600;
+        margin-right: 0.5rem;
+      }
+
+      .bolt-button button:hover {
+        background: #152638;
+      }
+
+      .bolt-button button span:not(.highlight) {
+        color: #8a9bae;
+        transition: color 0.3s ease;
+      }
+
+      /* Logo section styles */
+      .logo-section {
+        position: relative;
+        width: 100%;
+        padding: 2rem 0;
+        text-align: center;
+      }
+
+      .logo-section-text {
+        font-size: 0.875rem;
+        color: #8a9bae;
+        margin-bottom: 1.5rem;
+        font-weight: 500;
+      }
+
+      .logo-grid {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .crypto-logo {
+        width: 30px;
+        height: 30px;
+        opacity: 0.5;
+        transition: opacity 0.3s ease;
+        filter: grayscale(100%);
+      }
+
+      .crypto-logo:hover {
+        opacity: 1;
+        filter: grayscale(0%);
+      }
+    </style>
+  </head>
+  <body class="bg-black text-white font-roboto">
+    <!-- Top glow effect -->
+    <div class="top-glow"></div>
+
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 relative z-10 w-full max-w-full overflow-hidden">
+      <div class="text-center flex-grow flex flex-col justify-center">
+        <h1 class="text-6xl md:text-7xl font-montserrat font-bold tracking-normal text-white mb-3">MVP</h1>
+        <p class="text-xl md:text-2xl font-montserrat font-medium tracking-wide text-slate-300 mb-3">Most Valuable Printer</p>
+        <p class="text-xs md:text-base font-montserrat font-medium tracking-wide text-slate-500 mb-10">Cao94sypFQ4AW1g8TALnnErteLc2te4EETjLqwZwD6vZ</p>
+
+        <!-- Printer Image with Bolt-style border -->
+        <div class="flex justify-center mb-8 px-4 sm:px-6 md:px-8">
+          <div class="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bolt-border">
+            <svg>
+              <defs>
+                <linearGradient
+                  id="line-gradient"
+                  x1="20%"
+                  y1="0%"
+                  x2="-14%"
+                  y2="10%"
+                  gradientUnits="userSpaceOnUse"
+                  gradientTransform="rotate(-45)"
+                >
+                  <stop
+                    offset="0%"
+                    stop-color="#1488fc"
+                    stop-opacity="10%"
+                  ></stop>
+                  <stop
+                    offset="40%"
+                    stop-color="#1488fc"
+                    stop-opacity="100%"
+                  ></stop>
+                  <stop
+                    offset="50%"
+                    stop-color="#1488fc"
+                    stop-opacity="100%"
+                  ></stop>
+                  <stop
+                    offset="100%"
+                    stop-color="#1488fc"
+                    stop-opacity="10%"
+                  ></stop>
+                </linearGradient>
+                <linearGradient id="shine-gradient">
+                  <stop
+                    offset="0%"
+                    stop-color="white"
+                    stop-opacity="0%"
+                  ></stop>
+                  <stop
+                    offset="40%"
+                    stop-color="#8adaff"
+                    stop-opacity="100%"
+                  ></stop>
+                  <stop
+                    offset="50%"
+                    stop-color="#8adaff"
+                    stop-opacity="100%"
+                  ></stop>
+                  <stop
+                    offset="100%"
+                    stop-color="white"
+                    stop-opacity="0%"
+                  ></stop>
+                </linearGradient>
+              </defs>
+              <rect
+                class="prompt-effect-line"
+                pathLength="100"
+                stroke-linecap="round"
+              ></rect>
+              <rect
+                class="prompt-shine"
+                x="10%"
+                y="0"
+                width="70%"
+                height="1"
+              ></rect>
+            </svg>
+            <div class="inner-glow-wrapper">
+              <img
+                src="images/printer.jpg"
+                alt="Money Printer"
+                class="w-full h-auto mx-auto rounded-[11px] object-cover"
+                loading="lazy"
+              />
+              <div class="inner-glow"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Button -->
+        <div class="mt-8 flex justify-center">
+          <div class="bolt-button">
+            <div class="border-gradient"></div>
+            <a
+              href="https://dexscreener.com/solana/Cao94sypFQ4AW1g8TALnnErteLc2te4EETjLqwZwD6vZ"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <button>
+                <span class="highlight">Hold MVP</span>
+                <span class="font-inter font-medium">and earn diversified rewards</span>
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Crypto Logos Section -->
+      <div class="logo-section mt-auto">
+        <p class="logo-section-text font-montserrat">earn diversified rewards in your favorite cryptocurrencies</p>
+        <div class="logo-grid">
+          <div class="">
+            <img
+              src="images/btc_logo.png"
+              alt="Bitcoin"
+              class="crypto-logo"
+            />
+          </div>
+          <div class="">
+            <img
+              src="images/sol_logo.png"
+              alt="Solana"
+              class="crypto-logo"
+            />
+          </div>
+          <div class="">
+            <img
+              src="images/usdc_logo.png"
+              alt="USDC"
+              class="crypto-logo"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
